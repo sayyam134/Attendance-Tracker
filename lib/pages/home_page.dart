@@ -58,12 +58,12 @@ class _HomePageState extends State<HomePage> {
                   child: ListView.builder(itemBuilder: (context, index) {
                     return Dismissible(
                       background: Padding(
-                        padding: const EdgeInsets.all(28.0),
+                        padding: const EdgeInsets.all(24.0),
                         child: Container(
                           height: 200,
                           decoration: BoxDecoration(color: Colors.red , borderRadius: BorderRadius.circular(18)),
                           //color: Colors.red,
-                        child: Icon(Icons.delete_forever_rounded, color: Colors.white, size: 64,),),
+                        child: Icon(Icons.delete_forever_rounded, color: Colors.white, size: 84,),),
                       ),
                       key: UniqueKey(),
                       direction: DismissDirection.endToStart,
@@ -73,6 +73,26 @@ class _HomePageState extends State<HomePage> {
                           item.removeAt(index);
                           populateList();
                         });
+                      },
+                      confirmDismiss: (DismissDirection direction) async{
+                        return await showDialog(
+                            context: context,
+                            builder: (BuildContext context){
+                              return AlertDialog(
+                                title: const Text("Confirm"),
+                                content: const Text("Are you sure you wish to delete this Subject?",style: TextStyle(fontSize: 24),),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.of(context).pop(true),
+                                      child: const Text("DELETE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 18),)
+                                  ),
+                                  TextButton(
+                                      onPressed: () => Navigator.of(context).pop(false),
+                                      child: const Text("CANCEL", style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),)
+                                  ),
+                                ],
+                              );
+                            });
                       },
                       child: MyItem(index:index, SubName:item[index].subjectName,
                           TotClass:item[index].totDay,
