@@ -22,7 +22,6 @@ class MyItem extends StatefulWidget {
 
 class _MyItemState extends State<MyItem> {
   final mybox = Hive.box("dataBox");
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -74,7 +73,8 @@ class _MyItemState extends State<MyItem> {
                       ),
                     ],
                   ),
-                  Text(((widget.PresentClass/widget.TotClass)*100).toStringAsFixed(2)+"%",
+
+                  Text(percent(),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 34,
@@ -123,5 +123,13 @@ class _MyItemState extends State<MyItem> {
       String tempData = jsonEncode(updatedSubjectPresent);
       mybox.putAt(widget.index, tempData);
     });
+  }
+
+  String percent(){
+    String percentage = "0%";
+    if(widget.TotClass!=0){
+      percentage = ((widget.PresentClass/widget.TotClass)*100).toStringAsFixed(2)+"%";
+    }
+    return percentage;
   }
 }
