@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(24.0),
                         child: Container(
                           height: 200,
-                          decoration: BoxDecoration(color: Colors.red , borderRadius: BorderRadius.circular(18)),
+                          decoration: BoxDecoration(color: Colors.red.withOpacity(0.8) , borderRadius: BorderRadius.circular(18)),
                           //color: Colors.red,
                         child: Icon(Icons.delete_forever_rounded, color: Colors.white, size: 84,),),
                       ),

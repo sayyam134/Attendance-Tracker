@@ -28,78 +28,81 @@ class _MyItemState extends State<MyItem> {
   final mybox = Hive.box("dataBox");
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
-      child:Container(
-        decoration: BoxDecoration(color: Colors.blue.shade700, borderRadius: BorderRadius.circular(18)),
-        height: 200,
-        padding: EdgeInsets.only(top: 5.0, bottom: 16.0, right: 18.0, left: 18.0),
-        child:
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(height: 5,),
-            Text(widget.SubName,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
-            SizedBox(height: 10,),
-            Padding(
-              padding: const EdgeInsets.only(left: 12, right: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text("Total Classes: ",
-                            style: TextStyle(fontSize: 16,color: Colors.white),),
-                          Text(widget.TotClass.toString(),
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text("Present: ",
-                            style: TextStyle(fontSize: 16, color: Colors.white),),
-                          Text(widget.PresentClass.toString(),
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text("Absent: ",
-                            style: TextStyle(fontSize: 16,color: Colors.white),),
-                          Text((widget.TotClass-widget.PresentClass).toString(),
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),),
-                        ],
-                      ),
-                    ],
-                  ),
+    return Container(
+      decoration: BoxDecoration(color: Colors.blue.shade300.withOpacity(0.5)),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0, right: 16.0, left: 16.0, bottom: 8.0),
+        child:Container(
+          decoration: BoxDecoration(color: Colors.blue.shade700, borderRadius: BorderRadius.circular(18)),
+          height: 200,
+          padding: EdgeInsets.only(top: 5.0, bottom: 16.0, right: 18.0, left: 18.0),
+          child:
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(height: 5,),
+              Text(widget.SubName,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
+              SizedBox(height: 10,),
+              Padding(
+                padding: const EdgeInsets.only(left: 12, right: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text("Total Classes: ",
+                              style: TextStyle(fontSize: 16,color: Colors.white),),
+                            Text(widget.TotClass.toString(),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("Present: ",
+                              style: TextStyle(fontSize: 16, color: Colors.white),),
+                            Text(widget.PresentClass.toString(),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("Absent: ",
+                              style: TextStyle(fontSize: 16,color: Colors.white),),
+                            Text((widget.TotClass-widget.PresentClass).toString(),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),),
+                          ],
+                        ),
+                      ],
+                    ),
 
-                  Text(percent(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold
-                  ),
-                  )
-                ],
+                    Text(percent(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 34,
+                      fontWeight: FontWeight.bold
+                    ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 5,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(onPressed: (){
-                present();
-              }, child: Text("Present", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),), style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade500, minimumSize: Size(100, 50)),),
-                ElevatedButton(onPressed: (){
-                  absent();
-                }, child: Text("Absent", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),), style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade500, minimumSize: Size(100, 50)),),
-            ],)
-          ],
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(onPressed: (){
+                  present();
+                }, child: Text("Present", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),), style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade500, minimumSize: Size(100, 50)),),
+                  ElevatedButton(onPressed: (){
+                    absent();
+                  }, child: Text("Absent", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),), style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade500, minimumSize: Size(100, 50)),),
+              ],)
+            ],
+          ),
         ),
       ),
     );
