@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: MyItem(index:index, SubName:item[index].subjectName,
                           TotClass:item[index].totDay,
-                          PresentClass: item[index].pDay),
+                          PresentClass: item[index].pDay, item: item,),
                     );
                   }, itemCount: item.length,
                   )

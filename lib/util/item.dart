@@ -1,19 +1,23 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:a_counter/model/subject.dart';
+import 'package:a_counter/pages/home_page.dart';
+
+
 class MyItem extends StatefulWidget {
   int index;
   String SubName;
   int TotClass;
   int PresentClass;
+  List<Subject> item;
 
    MyItem({super.key,
      required this.index,
      required this.SubName,
      required this.TotClass,
-     required this.PresentClass
+     required this.PresentClass,
+     required this.item,
   });
 
   @override
@@ -110,6 +114,7 @@ class _MyItemState extends State<MyItem> {
       Subject updatedSubjectPresent = Subject(subjectName: tempSubjectObject.subjectName, totDay: tempSubjectObject.totDay+1, pDay: tempSubjectObject.pDay+1);
       String tempData = jsonEncode(updatedSubjectPresent);
       mybox.putAt(widget.index, tempData);
+      populateList();
     });
 
   }
@@ -122,14 +127,24 @@ class _MyItemState extends State<MyItem> {
       Subject updatedSubjectPresent = Subject(subjectName: tempSubjectObject.subjectName, totDay: tempSubjectObject.totDay+1, pDay: tempSubjectObject.pDay);
       String tempData = jsonEncode(updatedSubjectPresent);
       mybox.putAt(widget.index, tempData);
+      populateList();
     });
   }
 
   String percent(){
-    String percentage = "0%";
+    String percentage = "0 %";
     if(widget.TotClass!=0){
       percentage = ((widget.PresentClass/widget.TotClass)*100).toStringAsFixed(2)+"%";
     }
     return percentage;
+  }
+
+  void populateList() {
+    widget.item.clear();
+    for(int index=0; index<mybox.length; index++){
+      Map<String, dynamic> tempJsonData = jsonDecode(mybox.getAt(index));
+      Subject tempSubjectObject = Subject.fromJson(tempJsonData);
+      widget.item.add(tempSubjectObject);
+    }
   }
 }
