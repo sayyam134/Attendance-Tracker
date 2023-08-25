@@ -14,8 +14,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late TextEditingController controller1, controller2, controller3;
 
-  List<Subject> item =[];
+  List<Subject> item = [];
   final mybox = Hive.box("dataBox");
+
   @override
   void initState() {
     // TODO: implement initState
@@ -44,13 +45,14 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 10,),
-                Column(
-                 children: [
-                   Text("Attendance Tracker",
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                   SizedBox(height: 10,),
-                   ],
-               ),
+              Column(
+                children: [
+                  Text("Attendance Tracker",
+                      style: TextStyle(
+                          fontSize: 28, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 10,),
+                ],
+              ),
               const SizedBox(height: 2),
               Expanded(
                   child: ListView.builder(itemBuilder: (context, index) {
@@ -59,42 +61,58 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(24.0),
                         child: Container(
                           height: 200,
-                          decoration: BoxDecoration(color: Colors.red , borderRadius: BorderRadius.circular(18)),
+                          decoration: BoxDecoration(color: Colors.red,
+                              borderRadius: BorderRadius.circular(18)),
                           //color: Colors.red,
-                        child: Icon(Icons.delete_forever_rounded, color: Colors.white, size: 84,),),
+                          child: Icon(Icons.delete_forever_rounded,
+                            color: Colors.white, size: 84,),),
                       ),
                       key: UniqueKey(),
                       direction: DismissDirection.endToStart,
-                      onDismissed:(DismissDirection direction){
+                      onDismissed: (DismissDirection direction) {
                         setState(() {
                           mybox.deleteAt(index);
                           item.removeAt(index);
                           populateList();
                         });
                       },
-                      confirmDismiss: (DismissDirection direction) async{
+                      confirmDismiss: (DismissDirection direction) async {
                         return await showDialog(
                             context: context,
-                            builder: (BuildContext context){
+                            builder: (BuildContext context) {
                               return AlertDialog(
                                 title: const Text("Confirm"),
-                                content: const Text("Are you sure you wish to delete this Subject?",style: TextStyle(fontSize: 24),),
+                                content: const Text(
+                                  "Are you sure you wish to delete this Subject?",
+                                  style: TextStyle(fontSize: 24),),
                                 actions: [
                                   TextButton(
-                                      onPressed: () => Navigator.of(context).pop(true),
-                                      child: const Text("DELETE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 18),)
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(true),
+                                      child: const Text("DELETE",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red,
+                                            fontSize: 18),)
                                   ),
                                   TextButton(
-                                      onPressed: () => Navigator.of(context).pop(false),
-                                      child: const Text("CANCEL", style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),)
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(false),
+                                      child: const Text("CANCEL",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),)
                                   ),
                                 ],
                               );
                             });
                       },
-                      child: MyItem(index:index, SubName:item[index].subjectName,
-                          TotClass:item[index].totDay,
-                          PresentClass: item[index].pDay, item: item,),
+                      child: MyItem(
+                        index: index,
+                        SubName: item[index].subjectName,
+                        TotClass: item[index].totDay,
+                        PresentClass: item[index].pDay,
+                        item: item,),
                     );
                   }, itemCount: item.length,
                   )
@@ -156,26 +174,53 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void item_added()async{
+  void item_added() async {
     var name = controller1.text;
     var totday = int.parse(controller2.text);
     var pday = int.parse(controller3.text);
 
-    Subject temp =Subject(subjectName: name, totDay: totday, pDay: pday);
-    String tempData = jsonEncode(temp);
-    mybox.add(tempData);
-    populateList();
-    Navigator.of(context).pop();
+    if (totday >= pday) {
+      Subject temp = Subject(subjectName: name, totDay: totday, pDay: pday);
+      String tempData = jsonEncode(temp);
+      mybox.add(tempData);
+      populateList();
+      Navigator.of(context).pop();
+    }
+    else {
+      Navigator.of(context).pop();
+      showDialog(context: context, builder: (context) {
+        return AlertDialog(
+          title: Center(child: Text(
+            "Subject Not Added",
+            style: TextStyle(fontWeight: FontWeight.bold),)),
+          content: Container(
+            height: 60,
+            child: Text(
+                "No of Present cannot be greater than Total No of days.", style: TextStyle(fontSize: 20),),
+          ),
+        actions: [
+          Center(
+            child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    Navigator.of(context).pop();
+                  });
+                },
+                child: Text("Close", style: TextStyle(color: Colors.red, fontSize: 24),)),
+          )
+        ],
+        );
+      });
+    }
   }
 
   void populateList() {
     item.clear();
-    for(int index=0; index<mybox.length; index++){
+    for (int index = 0; index < mybox.length; index++) {
       Map<String, dynamic> tempJsonData = jsonDecode(mybox.getAt(index));
       Subject tempSubjectObject = Subject.fromJson(tempJsonData);
       item.add(tempSubjectObject);
     }
   }
-
 }// don't remove this
 
