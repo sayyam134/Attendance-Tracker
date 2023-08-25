@@ -49,9 +49,7 @@ class _HomePageState extends State<HomePage> {
                    Text("Attendance Tracker",
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                    SizedBox(height: 10,),
-                   Text("By: Sayyam Sancheti",
-                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                 ],
+                   ],
                ),
               const SizedBox(height: 2),
               Expanded(
