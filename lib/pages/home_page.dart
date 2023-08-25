@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade300,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(24.0),
                         child: Container(
                           height: 200,
-                          decoration: BoxDecoration(color: Colors.red.withOpacity(0.8) , borderRadius: BorderRadius.circular(18)),
+                          decoration: BoxDecoration(color: Colors.red , borderRadius: BorderRadius.circular(18)),
                           //color: Colors.red,
                         child: Icon(Icons.delete_forever_rounded, color: Colors.white, size: 84,),),
                       ),
@@ -112,8 +112,8 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           addItem();
         },
-        backgroundColor: Colors.white,
-        child: Icon(Icons.add, color: Colors.blue.shade700, size: 38,),
+        backgroundColor: Colors.grey.shade900,
+        child: Icon(Icons.add, color: Colors.white, size: 38,),
       ),
     );
   }

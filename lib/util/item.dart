@@ -29,11 +29,11 @@ class _MyItemState extends State<MyItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.blue.shade300.withOpacity(0.5)),
+      decoration: BoxDecoration(color: Colors.white.withOpacity(0.5)),
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0, right: 16.0, left: 16.0, bottom: 8.0),
         child:Container(
-          decoration: BoxDecoration(color: Colors.blue.shade700, borderRadius: BorderRadius.circular(18)),
+          decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(18)),
           height: 200,
           padding: EdgeInsets.only(top: 5.0, bottom: 16.0, right: 18.0, left: 18.0),
           child:
@@ -56,25 +56,25 @@ class _MyItemState extends State<MyItem> {
                         Row(
                           children: [
                             Text("Total Classes: ",
-                              style: TextStyle(fontSize: 16,color: Colors.white),),
+                              style: TextStyle(fontSize: 18,color: Colors.white),),
                             Text(widget.TotClass.toString(),
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
                           ],
                         ),
                         Row(
                           children: [
                             Text("Present: ",
-                              style: TextStyle(fontSize: 16, color: Colors.white),),
+                              style: TextStyle(fontSize: 18, color: Colors.white),),
                             Text(widget.PresentClass.toString(),
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),),
                           ],
                         ),
                         Row(
                           children: [
                             Text("Absent: ",
-                              style: TextStyle(fontSize: 16,color: Colors.white),),
+                              style: TextStyle(fontSize: 18,color: Colors.white),),
                             Text((widget.TotClass-widget.PresentClass).toString(),
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),),
                           ],
                         ),
                       ],
