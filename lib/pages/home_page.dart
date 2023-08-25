@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(24.0),
                         child: Container(
                           height: 200,
-                          decoration: BoxDecoration(color: Colors.red,
+                          decoration: BoxDecoration(color: Colors.red.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(18)),
                           //color: Colors.red,
                           child: Icon(Icons.delete_forever_rounded,
@@ -196,7 +196,7 @@ class _HomePageState extends State<HomePage> {
           content: Container(
             height: 60,
             child: Text(
-                "No of Present cannot be greater than Total No of days.", style: TextStyle(fontSize: 20),),
+                "No of Present cannot be more than Total No of days.", style: TextStyle(fontSize: 20),),
           ),
         actions: [
           Center(

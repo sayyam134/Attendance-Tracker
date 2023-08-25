@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:a_counter/model/subject.dart';
-import 'package:a_counter/pages/home_page.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 
 class MyItem extends StatefulWidget {
@@ -34,7 +34,7 @@ class _MyItemState extends State<MyItem> {
         padding: const EdgeInsets.only(top: 8.0, right: 16.0, left: 16.0, bottom: 8.0),
         child:Container(
           decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(18)),
-          height: 200,
+          height: 252,
           padding: EdgeInsets.only(top: 5.0, bottom: 16.0, right: 18.0, left: 18.0),
           child:
           Column(
@@ -53,44 +53,54 @@ class _MyItemState extends State<MyItem> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 15,),
                         Row(
                           children: [
                             Text("Total Classes: ",
-                              style: TextStyle(fontSize: 18,color: Colors.white),),
+                              style: TextStyle(fontSize: 20,color: Colors.white),),
                             Text(widget.TotClass.toString(),
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
                           ],
                         ),
+                        SizedBox(height: 8,),
                         Row(
                           children: [
                             Text("Present: ",
-                              style: TextStyle(fontSize: 18, color: Colors.white),),
+                              style: TextStyle(fontSize: 20, color: Colors.white),),
                             Text(widget.PresentClass.toString(),
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),),
                           ],
                         ),
+                        SizedBox(height: 8,),
                         Row(
                           children: [
                             Text("Absent: ",
-                              style: TextStyle(fontSize: 18,color: Colors.white),),
+                              style: TextStyle(fontSize: 20,color: Colors.white),),
                             Text((widget.TotClass-widget.PresentClass).toString(),
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),),
                           ],
                         ),
                       ],
                     ),
-
-                    Text(percent(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold
+                    CircularPercentIndicator(
+                        radius: 60,
+                      lineWidth: 11,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      percent: percent(),
+                      progressColor: percent() >= 0.75 ? Colors.green.shade500 : percent()< 0.75 && percent()>= 0.6 ? Colors.yellow.shade500 : Colors.red.shade500,
+                      backgroundColor: percent() >= 0.75 ? Colors.green.shade100 : percent()< 0.75 && percent()>= 0.6 ? Colors.yellow.shade50 : Colors.red.shade100,
+                      center: Text((percent()*100).toStringAsFixed(1)+"%",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
                     ),
-                    )
                   ],
                 ),
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 20,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -134,10 +144,10 @@ class _MyItemState extends State<MyItem> {
     });
   }
 
-  String percent(){
-    String percentage = "0 %";
+  double percent(){
+    double percentage = 0;
     if(widget.TotClass!=0){
-      percentage = ((widget.PresentClass/widget.TotClass)*100).toStringAsFixed(2)+"%";
+      percentage = ((widget.PresentClass/widget.TotClass));
     }
     return percentage;
   }
