@@ -48,9 +48,9 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10,),
               Column(
                 children: [
-                  Text("Attendance Tracker",
+                  Text("Student Attendance Tracker",
                       style: TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold)),
+                          fontSize: 26, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10,),
                 ],
               ),

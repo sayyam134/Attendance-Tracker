@@ -141,8 +141,10 @@ class _MyItemState extends State<MyItem> {
 
   void absent() {
     DateTime datetime = DateTime.now();
-    String _date = datetime.day.toString()+"-"+datetime.month.toString()+"-"+datetime.year.toString();
-    String _time = datetime.hour.toString()+":"+datetime.minute.toString();
+    String _date = DateFormat('yyyy-MM-dd').format(datetime);
+    String _time = DateFormat('kk:mm').format(datetime);
+    //String _date = datetime.day.toString()+"-"+datetime.month.toString()+"-"+datetime.year.toString();
+    //String _time = datetime.hour.toString()+":"+datetime.minute.toString();
     setState(() {
       widget.TotClass++;
       Subject temp = _subjectbox.getAt(widget.index);
