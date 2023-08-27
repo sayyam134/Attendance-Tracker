@@ -1,25 +1,26 @@
+import 'package:hive/hive.dart';
+import 'detail.dart';
+
+part 'subject.g.dart';
+
+@HiveType(typeId: 0)
 class Subject{
-  String subjectName;
-  int totDay;
-  int pDay;
+
+  @HiveField(0)
+  String subjectname;
+
+  @HiveField(1)
+  int totalclass;
+
+  @HiveField(2)
+  int presentclass;
+
+  @HiveField(3)
+  List<Detail> dates = [];
 
   Subject({
-    required this.subjectName,
-    required this.totDay,
-    required this.pDay,
-  }
-
-  );
-
-  // a constructor that convert json to object
-  Subject.fromJson(Map<String,dynamic> json): subjectName=json['subjectName'],
-        totDay=json["totDay"],
-        pDay=json["pDay"];
-
-  // a method that convert object to json string
-  Map<String,dynamic> toJson()=>{
-    "subjectName":subjectName,
-    "totDay":totDay,
-    "pDay":pDay
-  };
+    required this.subjectname,
+    required this.totalclass,
+    required this.presentclass
+});
 }

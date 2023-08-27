@@ -1,8 +1,9 @@
-import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:a_counter/model/subject.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import '../model/detail.dart';
 
 
 class MyItem extends StatefulWidget {
@@ -25,7 +26,7 @@ class MyItem extends StatefulWidget {
 }
 
 class _MyItemState extends State<MyItem> {
-  final mybox = Hive.box("dataBox");
+  Box _subjectbox = Hive.box("_subjectbox");
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -119,27 +120,36 @@ class _MyItemState extends State<MyItem> {
   }
 
   void present() {
+    DateTime datetime = DateTime.now();
+    String _date = DateFormat('yyyy-MM-dd').format(datetime);
+    String _time = DateFormat('kk:mm').format(datetime);
+    //String _date = datetime.day.toString()+"-"+datetime.month.toString()+"-"+datetime.year.toString();
+    //String _time = datetime.hour.toString()+":"+datetime.minute.toString();
     setState(() {
       widget.TotClass++;
       widget.PresentClass++;
-      Map<String, dynamic> tempJsonData = jsonDecode(mybox.getAt(widget.index));
-      Subject tempSubjectObject = Subject.fromJson(tempJsonData);
-      Subject updatedSubjectPresent = Subject(subjectName: tempSubjectObject.subjectName, totDay: tempSubjectObject.totDay+1, pDay: tempSubjectObject.pDay+1);
-      String tempData = jsonEncode(updatedSubjectPresent);
-      mybox.putAt(widget.index, tempData);
+      Subject temp = _subjectbox.getAt(widget.index);
+      temp.totalclass++;
+      temp.presentclass++;
+      Detail tempDetail= Detail(date: _date, time: _time, ispresent: true);
+      temp.dates.add(tempDetail);
+      _subjectbox.putAt(widget.index, temp);
       populateList();
     });
 
   }
 
   void absent() {
+    DateTime datetime = DateTime.now();
+    String _date = datetime.day.toString()+"-"+datetime.month.toString()+"-"+datetime.year.toString();
+    String _time = datetime.hour.toString()+":"+datetime.minute.toString();
     setState(() {
       widget.TotClass++;
-      Map<String, dynamic> tempJsonData = jsonDecode(mybox.getAt(widget.index));
-      Subject tempSubjectObject = Subject.fromJson(tempJsonData);
-      Subject updatedSubjectPresent = Subject(subjectName: tempSubjectObject.subjectName, totDay: tempSubjectObject.totDay+1, pDay: tempSubjectObject.pDay);
-      String tempData = jsonEncode(updatedSubjectPresent);
-      mybox.putAt(widget.index, tempData);
+      Subject temp = _subjectbox.getAt(widget.index);
+      temp.totalclass++;
+      Detail tempDetail= Detail(date: _date, time: _time, ispresent: false);
+      temp.dates.add(tempDetail);
+      _subjectbox.putAt(widget.index, temp);
       populateList();
     });
   }
@@ -154,10 +164,8 @@ class _MyItemState extends State<MyItem> {
 
   void populateList() {
     widget.item.clear();
-    for(int index=0; index<mybox.length; index++){
-      Map<String, dynamic> tempJsonData = jsonDecode(mybox.getAt(index));
-      Subject tempSubjectObject = Subject.fromJson(tempJsonData);
-      widget.item.add(tempSubjectObject);
+    for (int index = 0; index < _subjectbox.length; index++) {
+      widget.item.add(_subjectbox.getAt(index));
     }
   }
 }

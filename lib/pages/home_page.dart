@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   late TextEditingController controller1, controller2, controller3;
 
   List<Subject> item = [];
-  final mybox = Hive.box("dataBox");
+  Box _subjectbox = Hive.box("_subjectbox");
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                         direction: DismissDirection.endToStart,
                         onDismissed: (DismissDirection direction) {
                           setState(() {
-                            mybox.deleteAt(index);
+                            _subjectbox.deleteAt(index);
                             item.removeAt(index);
                             populateList();
                           });
@@ -114,9 +114,9 @@ class _HomePageState extends State<HomePage> {
                         },
                         child: MyItem(
                           index: index,
-                          SubName: item[index].subjectName,
-                          TotClass: item[index].totDay,
-                          PresentClass: item[index].pDay,
+                          SubName: item[index].subjectname,
+                          TotClass: item[index].totalclass,
+                          PresentClass: item[index].presentclass,
                           item: item,),
                       ),
                     );
@@ -186,9 +186,8 @@ class _HomePageState extends State<HomePage> {
     var pday = int.parse(controller3.text);
 
     if (totday >= pday) {
-      Subject temp = Subject(subjectName: name, totDay: totday, pDay: pday);
-      String tempData = jsonEncode(temp);
-      mybox.add(tempData);
+      Subject temp = Subject(subjectname: name, totalclass: totday, presentclass: pday);
+      _subjectbox.add(temp);
       populateList();
       Navigator.of(context).pop();
     }
@@ -222,10 +221,8 @@ class _HomePageState extends State<HomePage> {
 
   void populateList() {
     item.clear();
-    for (int index = 0; index < mybox.length; index++) {
-      Map<String, dynamic> tempJsonData = jsonDecode(mybox.getAt(index));
-      Subject tempSubjectObject = Subject.fromJson(tempJsonData);
-      item.add(tempSubjectObject);
+    for (int index = 0; index < _subjectbox.length; index++) {
+      item.add(_subjectbox.getAt(index));
     }
   }
 }// don't remove this

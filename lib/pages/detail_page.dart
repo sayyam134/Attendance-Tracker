@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:a_counter/model/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../model/subject.dart';
 
 class DetailPage extends StatelessWidget {
   final int index;
-  final mybox = Hive.box("dataBox");
+  Box _subjectbox = Hive.box("_subjectbox");
   DetailPage({super.key, required this.index});
 
   @override
@@ -29,7 +30,7 @@ class DetailPage extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Icon(Icons.arrow_back_ios_new, size: 30),
                         )),
-                    Text(data().subjectName,
+                    Text(data().subjectname,
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold)),
                     SizedBox(width: 39,)
@@ -44,7 +45,7 @@ class DetailPage extends StatelessWidget {
                 padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                 children: [
                   DataTable(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(width: 2)),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(width: 3)),
                   dividerThickness: 5,
                     columns: [
                   DataColumn(label: Text("ID", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
@@ -52,111 +53,8 @@ class DetailPage extends StatelessWidget {
                   DataColumn(label: Text("Time", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
                   DataColumn(label: Text("Status", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
                 ],
-                    rows:[
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text("1")),
-                        DataCell(Text("01-02-2005")),
-                        DataCell(Text("10:30")),
-                        DataCell(Text("Present")),
-                      ]),
-
-                    ]),
+                    rows:_data()
+                  ),
               ]),
             )
           ],
@@ -166,8 +64,29 @@ class DetailPage extends StatelessWidget {
   }
 
   Subject data(){
-    Map<String, dynamic> tempJsonData = jsonDecode(mybox.getAt(index));
-    Subject tempSubjectObject = Subject.fromJson(tempJsonData);
-    return tempSubjectObject;
+    return _subjectbox.getAt(index);
+  }
+
+  List<DataRow> _data(){
+    List<DataRow> temp = [];
+    List<Detail> d = data().dates;
+    for(int i=0; i<d.length; i++){
+      String status = "";
+      if(d[i].ispresent){
+        status = "Present";
+      }
+      else{
+        status = "Absent";
+      }
+
+      temp.add(DataRow(cells: [
+        DataCell(Text((i+1).toString())),
+        DataCell(Text(d[i].date)),
+        DataCell(Text(d[i].time)),
+        DataCell(Text(status, style: TextStyle(color: status=="Present" ? Colors.green.shade800 : Colors.red.shade900, fontWeight: FontWeight.bold),)),
+      ]));
+    }
+    return temp;
+
   }
 }// don't remove this
