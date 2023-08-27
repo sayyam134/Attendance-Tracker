@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:a_counter/pages/detail_page.dart';
 import 'package:a_counter/util/item.dart';
 import 'package:flutter/material.dart';
 import 'package:a_counter/model/subject.dart';
@@ -56,63 +57,68 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 2),
               Expanded(
                   child: ListView.builder(itemBuilder: (context, index) {
-                    return Dismissible(
-                      background: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Container(
-                          height: 200,
-                          decoration: BoxDecoration(color: Colors.red.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(18)),
-                          //color: Colors.red,
-                          child: Icon(Icons.delete_forever_rounded,
-                            color: Colors.white, size: 84,),),
+                    return InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
+                      },
+                      child: Dismissible(
+                        background: Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Container(
+                            height: 200,
+                            decoration: BoxDecoration(color: Colors.red.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(18)),
+                            //color: Colors.red,
+                            child: Icon(Icons.delete_forever_rounded,
+                              color: Colors.white, size: 84,),),
+                        ),
+                        key: UniqueKey(),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (DismissDirection direction) {
+                          setState(() {
+                            mybox.deleteAt(index);
+                            item.removeAt(index);
+                            populateList();
+                          });
+                        },
+                        confirmDismiss: (DismissDirection direction) async {
+                          return await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Confirm"),
+                                  content: const Text(
+                                    "Are you sure you wish to delete this Subject?",
+                                    style: TextStyle(fontSize: 24),),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(true),
+                                        child: const Text("DELETE",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.red,
+                                              fontSize: 18),)
+                                    ),
+                                    TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                        child: const Text("CANCEL",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),)
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        child: MyItem(
+                          index: index,
+                          SubName: item[index].subjectName,
+                          TotClass: item[index].totDay,
+                          PresentClass: item[index].pDay,
+                          item: item,),
                       ),
-                      key: UniqueKey(),
-                      direction: DismissDirection.endToStart,
-                      onDismissed: (DismissDirection direction) {
-                        setState(() {
-                          mybox.deleteAt(index);
-                          item.removeAt(index);
-                          populateList();
-                        });
-                      },
-                      confirmDismiss: (DismissDirection direction) async {
-                        return await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text("Confirm"),
-                                content: const Text(
-                                  "Are you sure you wish to delete this Subject?",
-                                  style: TextStyle(fontSize: 24),),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(true),
-                                      child: const Text("DELETE",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.red,
-                                            fontSize: 18),)
-                                  ),
-                                  TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(false),
-                                      child: const Text("CANCEL",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),)
-                                  ),
-                                ],
-                              );
-                            });
-                      },
-                      child: MyItem(
-                        index: index,
-                        SubName: item[index].subjectName,
-                        TotClass: item[index].totDay,
-                        PresentClass: item[index].pDay,
-                        item: item,),
                     );
                   }, itemCount: item.length,
                   )
