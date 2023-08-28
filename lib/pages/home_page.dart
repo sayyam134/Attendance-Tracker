@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:a_counter/pages/detail_page.dart';
 import 'package:a_counter/util/item.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +41,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        bottom: false,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -131,6 +131,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(side: BorderSide(width: 5, color: Colors.white), borderRadius: BorderRadius.circular(100)),
         onPressed: () {
           addItem();
         },
