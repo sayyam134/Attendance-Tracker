@@ -1,5 +1,6 @@
 import 'package:a_counter/pages/detail_page.dart';
 import 'package:a_counter/util/item.dart';
+import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:a_counter/model/subject.dart';
 import 'package:hive/hive.dart';
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _isInterstitialAdLoaded = false;
   late TextEditingController controller1, controller2, controller3;
 
   List<Subject> item = [];
@@ -25,6 +27,30 @@ class _HomePageState extends State<HomePage> {
     controller2 = TextEditingController();
     controller3 = TextEditingController();
     populateList();
+    FacebookAudienceNetwork.init(
+      testingId: "0b950512-1eee-401b-94c6-beb4ce854c7c",
+      //iOSAdvertiserTrackingEnabled: true,
+    );
+
+    _loadInterstitialAd();
+  }
+
+  void _loadInterstitialAd() {
+    FacebookInterstitialAd.loadInterstitialAd(
+      // placementId: "YOUR_PLACEMENT_ID",
+      placementId: "IMG_16_9_APP_INSTALL#277399021708749_277431985038786",
+      listener: (result, value) {
+        print(">> FAN > Interstitial Ad: $result --> $value");
+        if (result == InterstitialAdResult.LOADED)
+          _isInterstitialAdLoaded = true;
+
+        if (result == InterstitialAdResult.DISMISSED &&
+            value["invalidated"] == true) {
+          _isInterstitialAdLoaded = false;
+          _loadInterstitialAd();
+        }
+      },
+    );
   }
 
   @override
@@ -58,7 +84,12 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                   child: ListView.builder(itemBuilder: (context, index) {
                     return InkWell(
+                      onLongPress: (){
+                        _showInterstitialAd();
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
+                      },
                       onTap: (){
+                        _showInterstitialAd();
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
                       },
                       child: Dismissible(
@@ -208,6 +239,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: TextButton(
                 onPressed: () {
+                  _showInterstitialAd();
                   setState(() {
                     Navigator.of(context).pop();
                   });
@@ -225,6 +257,13 @@ class _HomePageState extends State<HomePage> {
     for (int index = 0; index < _subjectbox.length; index++) {
       item.add(_subjectbox.getAt(index));
     }
+  }
+
+  _showInterstitialAd() {
+    if (_isInterstitialAdLoaded == true)
+      FacebookInterstitialAd.showInterstitialAd();
+    else
+      print("Interstial Ad not yet loaded!");
   }
 }// don't remove this
 

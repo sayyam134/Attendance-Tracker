@@ -42,9 +42,10 @@ class DetailPage extends StatelessWidget {
             const SizedBox(height: 12),
             Expanded(
               child: ListView(
-                padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                padding: EdgeInsets.all(5),
                 children: [
                   DataTable(
+                    columnSpacing: 50,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(width: 3)),
                   dividerThickness: 5,
                     columns: [
