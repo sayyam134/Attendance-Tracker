@@ -4,6 +4,9 @@ import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:a_counter/model/subject.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
+
+import '../model/detail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -84,13 +87,23 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                   child: ListView.builder(itemBuilder: (context, index) {
                     return InkWell(
-                      onLongPress: (){
+                      onLongPress: ()async{
                         _showInterstitialAd();
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
+                        bool check = await Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
+                        if(check){
+                          setState(() {
+                            populateList();
+                          });
+                        }
                       },
-                      onTap: (){
+                      onTap: ()async{
                         _showInterstitialAd();
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
+                        bool check = await Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
+                        if(check){
+                          setState(() {
+                            populateList();
+                          });
+                        }
                       },
                       child: Dismissible(
                         background: Padding(
@@ -216,9 +229,20 @@ class _HomePageState extends State<HomePage> {
     var name = controller1.text;
     var totday = int.parse(controller2.text);
     var pday = int.parse(controller3.text);
+    DateTime datetime = DateTime.now();
+    String _date = DateFormat('yyyy-MM-dd').format(datetime);
+    String _time = DateFormat('kk:mm').format(datetime);
 
     if (totday >= pday) {
       Subject temp = Subject(subjectname: name, totalclass: totday, presentclass: pday);
+      for(int i=0; i<pday; i++){
+        Detail tempDetail= Detail(date: _date, time: _time, ispresent: true);
+        temp.dates.add(tempDetail);
+      }
+      for(int i=0; i<totday-pday; i++){
+        Detail tempDetail= Detail(date: _date, time: _time, ispresent: false);
+        temp.dates.add(tempDetail);
+      }
       _subjectbox.add(temp);
       populateList();
       Navigator.of(context).pop();

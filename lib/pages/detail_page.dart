@@ -4,11 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../model/subject.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   final int index;
-  Box _subjectbox = Hive.box("_subjectbox");
-  DetailPage({super.key, required this.index});
 
+  DetailPage({
+    super.key,
+    required this.index,
+  });
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  Box _subjectbox = Hive.box("_subjectbox");
+  List<DataRow> _datarows = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _datapopulate();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +41,7 @@ class DetailPage extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: (){
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15.0),
@@ -49,12 +66,12 @@ class DetailPage extends StatelessWidget {
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(width: 3)),
                   dividerThickness: 5,
                     columns: [
-                  DataColumn(label: Text("ID", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
+                  //DataColumn(label: Text("ID", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
                   DataColumn(label: Text("Date", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
                   DataColumn(label: Text("Time", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
                   DataColumn(label: Text("Status", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
                 ],
-                    rows:_data()
+                    rows:_datarows
                   ),
               ]),
             )
@@ -65,11 +82,11 @@ class DetailPage extends StatelessWidget {
   }
 
   Subject data(){
-    return _subjectbox.getAt(index);
+    return _subjectbox.getAt(widget.index);
   }
 
-  List<DataRow> _data(){
-    List<DataRow> temp = [];
+  void _datapopulate(){
+    _datarows.clear();
     List<Detail> d = data().dates;
     for(int i=0; i<d.length; i++){
       String status = "";
@@ -80,14 +97,76 @@ class DetailPage extends StatelessWidget {
         status = "Absent";
       }
 
-      temp.add(DataRow(cells: [
-        DataCell(Text((i+1).toString())),
+      _datarows.add(DataRow(
+        onLongPress: (){
+          deleterow(i);
+        },
+          cells: [
+        //DataCell(Text((i+1).toString())),
         DataCell(Text(d[i].date)),
         DataCell(Text(d[i].time)),
         DataCell(Text(status, style: TextStyle(color: status=="Present" ? Colors.green.shade800 : Colors.red.shade900, fontWeight: FontWeight.bold),)),
       ]));
     }
-    return temp;
+  }
 
+  void deleterow(int i) async{
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: const Text("Confirm"),
+            content: const Text(
+              "Are you sure you wish to delete this Entry?",
+              style: TextStyle(fontSize: 24),),
+            actions: [
+              TextButton(
+                  onPressed: (){
+                    del(i);
+                    _datapopulate();
+                    Navigator.of(context).pop(true);
+
+          },
+
+                  child: const Text("DELETE",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontSize: 18),)
+              ),
+              TextButton(
+                  onPressed: () =>
+                      Navigator.of(context).pop(false),
+                  child: const Text("CANCEL",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),)
+              ),
+            ],
+          );
+        }
+    );
+
+  }
+
+  void del(int i){
+    setState(() {
+      Subject temp = data();
+      bool status = temp.dates[i].ispresent;
+      if(status){
+        temp.totalclass--;
+        temp.presentclass--;
+      }
+      else{
+        temp.totalclass--;
+      }
+      //remove from display
+      _datarows.removeAt(i);
+
+      //remove from memory
+
+      temp.dates.removeAt(i);
+      _subjectbox.putAt(widget.index, temp);
+    });
   }
 }// don't remove this
