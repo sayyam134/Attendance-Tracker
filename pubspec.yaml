@@ -44,6 +44,8 @@ dependencies:
   facebook_audience_network: ^1.0.1
   youtube_player_flutter: ^8.1.2
   page_transition: ^2.0.9
+  flutter_local_notifications: ^15.1.1
+  permission_handler: ^10.4.3
 
 dev_dependencies:
   flutter_test:

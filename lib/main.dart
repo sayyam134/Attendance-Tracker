@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'model/detail.dart';
 import 'model/subject.dart';
-
+import 'package:timezone/data/latest.dart' as tz;
 bool? isshown;
 
 void main()async{
@@ -13,7 +13,9 @@ void main()async{
   Hive.registerAdapter(DetailAdapter());
   await Hive.openBox("_subjectbox");
   Box onBoard = await Hive.openBox("_onboard");
+  WidgetsFlutterBinding.ensureInitialized();
   isshown =onBoard.get("onboardshown");
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 

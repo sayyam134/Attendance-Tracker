@@ -1,3 +1,4 @@
+import 'package:a_counter/services/noti.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -121,10 +122,12 @@ class _MyItemState extends State<MyItem> {
 
   void present() {
     DateTime datetime = DateTime.now();
+    DateTime tomorrow = datetime.add(Duration(days: 1));
+    if(datetime.weekday==5){
+      tomorrow = datetime.add(Duration(days: 3));
+    }
     String _date = DateFormat('yyyy-MM-dd').format(datetime);
     String _time = DateFormat('kk:mm').format(datetime);
-    //String _date = datetime.day.toString()+"-"+datetime.month.toString()+"-"+datetime.year.toString();
-    //String _time = datetime.hour.toString()+":"+datetime.minute.toString();
     setState(() {
       widget.TotClass++;
       widget.PresentClass++;
@@ -135,16 +138,19 @@ class _MyItemState extends State<MyItem> {
       temp.dates.add(tempDetail);
       _subjectbox.putAt(widget.index, temp);
       populateList();
+      NotificationService().schdeuleNotification(id: widget.index ,body: "Update Attendance of ${widget.SubName}",scheduleDateTime: tomorrow);
     });
 
   }
 
   void absent() {
     DateTime datetime = DateTime.now();
+    DateTime tomorrow = datetime.add(Duration(days: 1));
+    if(datetime.weekday==5){
+      tomorrow = datetime.add(Duration(days: 3));
+    }
     String _date = DateFormat('yyyy-MM-dd').format(datetime);
     String _time = DateFormat('kk:mm').format(datetime);
-    //String _date = datetime.day.toString()+"-"+datetime.month.toString()+"-"+datetime.year.toString();
-    //String _time = datetime.hour.toString()+":"+datetime.minute.toString();
     setState(() {
       widget.TotClass++;
       Subject temp = _subjectbox.getAt(widget.index);
@@ -153,6 +159,7 @@ class _MyItemState extends State<MyItem> {
       temp.dates.add(tempDetail);
       _subjectbox.putAt(widget.index, temp);
       populateList();
+      NotificationService().schdeuleNotification(id: widget.index ,body: "Update Attendance of ${widget.SubName}",scheduleDateTime: tomorrow);
     });
   }
 

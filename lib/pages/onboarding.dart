@@ -38,6 +38,7 @@ class _OnBoardingState extends State<OnBoarding> {
           padding: const EdgeInsets.only(top: 20,),
           width: MediaQuery.of(context).size.width,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 decoration: BoxDecoration(color: Colors.grey.shade50, borderRadius: BorderRadius.circular(10)),

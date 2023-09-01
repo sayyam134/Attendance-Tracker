@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:a_counter/model/subject.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import '../model/detail.dart';
+import '../services/noti.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -213,7 +214,20 @@ class _HomePageState extends State<HomePage> {
         actions: [
           Center(
             child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async{
+                  var _notificationname = controller1.text;
+                  PermissionStatus notificationStatus = await Permission.notification.request();
+                  if(notificationStatus== PermissionStatus.granted){
+                    NotificationService().showNotification(title: "New Subject: $_notificationname is added.!");
+                    print("working");
+                  }
+                  if(notificationStatus== PermissionStatus.denied){
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ther permission is denied")));
+                    print("Not working");
+                  }
+                  if(notificationStatus== PermissionStatus.permanentlyDenied){
+                    openAppSettings();
+                  }
                   setState(() {
                     item_added();
                   });
