@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:a_counter/model/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -54,6 +53,15 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 ),
                 SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.info_outline_rounded, color: Colors.grey.shade600,),
+                    SizedBox(width: 8,),
+                    Text("Long Press on Entries to ", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                    Text("DELETE", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.red.shade900),),
+                  ],
+                ),
               ],
             ),
             const SizedBox(height: 12),
