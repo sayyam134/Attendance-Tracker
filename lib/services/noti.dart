@@ -7,13 +7,21 @@ class NotificationService{
 
   Future<void> initNotification()async{
     AndroidInitializationSettings androidInitializationSettings = const AndroidInitializationSettings("@mipmap/ic_launcher");
-
-    var initializationSettings = InitializationSettings(
-      android: androidInitializationSettings
+    DarwinInitializationSettings iosInitializationSettings = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload)async{}
     );
-    await notificationsPlugin.initialize(initializationSettings,
-    onDidReceiveNotificationResponse:
-        (NotificationResponse notificationRes)async{});
+
+    InitializationSettings initializationSettings = InitializationSettings(
+      android: androidInitializationSettings,
+          iOS: iosInitializationSettings
+    );
+    await notificationsPlugin.initialize(
+        initializationSettings,
+        onDidReceiveNotificationResponse:
+        (NotificationResponse notificationResponse)async{});
   }
 
   Future showNotification({
@@ -49,7 +57,7 @@ class NotificationService{
         importance: Importance.max,
         priority: Priority.high,
         icon: "ic_launcher"
-      )
-    );
+      ),
+      iOS: DarwinNotificationDetails());
   }
 }

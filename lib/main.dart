@@ -13,9 +13,10 @@ void main()async{
   Hive.registerAdapter(DetailAdapter());
   await Hive.openBox("_subjectbox");
   Box onBoard = await Hive.openBox("_onboard");
-  WidgetsFlutterBinding.ensureInitialized();
   isshown =onBoard.get("onboardshown");
   tz.initializeTimeZones();
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 

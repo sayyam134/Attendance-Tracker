@@ -24,16 +24,17 @@ class _HomePageState extends State<HomePage> {
   Box _subjectbox = Hive.box("_subjectbox");
 
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
     controller1 = TextEditingController();
     controller2 = TextEditingController();
     controller3 = TextEditingController();
     populateList();
+    Permission.notification.request();
+    NotificationService().initNotification();
     FacebookAudienceNetwork.init(
-      testingId: "02fa9176-d294-44a8-8f31-55b91b190ef1",
-      //iOSAdvertiserTrackingEnabled: true,
+      iOSAdvertiserTrackingEnabled: true,
     );
 
     _loadInterstitialAd();
@@ -217,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () async{
                   var _notificationname = controller1.text;
                   PermissionStatus notificationStatus = await Permission.notification.request();
-                  if(notificationStatus== PermissionStatus.granted){
+                  if(notificationStatus == PermissionStatus.granted){
                     NotificationService().showNotification(title: "New Subject: $_notificationname is added.!");
                     print("working");
                   }

@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Permission options for the `reminder` group -->
+        <key>PermissionGroupNotification</key>
+        <string>notification</string>
 </dict>
 </plist>

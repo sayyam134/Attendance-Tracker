@@ -14,7 +14,7 @@ class OnBoarding extends StatefulWidget {
 
 class _OnBoardingState extends State<OnBoarding> {
   Box onboard = Hive.box("_onboard");
-  final tutorialvideo ="https://youtu.be/N6ih0TrimDY?si=76L1_x3fq7mboYvL";
+  final tutorialvideo ="https://youtube.com/shorts/Y9dR1pDPfFI?feature=share";
   late YoutubePlayerController _ytcontroller;
 
   @override
