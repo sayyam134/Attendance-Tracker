@@ -26,6 +26,7 @@ class _OnBoardingState extends State<OnBoarding> {
       initialVideoId: videoID!,
       flags: const YoutubePlayerFlags(
         autoPlay: true,
+        loop: true,
       )
     );
   }
@@ -82,7 +83,6 @@ class _OnBoardingState extends State<OnBoarding> {
                 },
                 child: const Text("I Understand", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w400),),
               ),
-
             ],
           ),
         ),

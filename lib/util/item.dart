@@ -8,8 +8,8 @@ import '../model/detail.dart';
 
 
 class MyItem extends StatefulWidget {
-  int index;
-  String SubName;
+  final int index;
+  final String SubName;
   int TotClass;
   int PresentClass;
   List<Subject> item;

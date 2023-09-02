@@ -83,6 +83,16 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(
                           fontSize: 26, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.info_outline_rounded, color: Colors.grey.shade600,),
+                      SizedBox(width: 8,),
+                      Text("Slide Left on Subject to ", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),),
+                      Text("DELETE", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.red.shade900),),
+                    ],
+                  ),
+                  SizedBox(height: 5,),
                 ],
               ),
               const SizedBox(height: 2),

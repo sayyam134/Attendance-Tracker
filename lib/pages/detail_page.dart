@@ -110,7 +110,6 @@ class _DetailPageState extends State<DetailPage> {
           deleterow(i);
         },
           cells: [
-        //DataCell(Text((i+1).toString())),
         DataCell(Text(d[i].date)),
         DataCell(Text(d[i].time)),
         DataCell(Text(status, style: TextStyle(color: status=="Present" ? Colors.green.shade800 : Colors.red.shade900, fontWeight: FontWeight.bold),)),
