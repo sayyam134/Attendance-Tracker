@@ -125,6 +125,7 @@ class _HomePageState extends State<HomePage> {
                             _subjectbox.deleteAt(index);
                             item.removeAt(index);
                             populateList();
+                            NotificationService().cancelNotifications(index);
                           });
                         },
                         confirmDismiss: (DismissDirection direction) async {

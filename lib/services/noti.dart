@@ -60,4 +60,8 @@ class NotificationService{
       ),
       iOS: DarwinNotificationDetails());
   }
+
+  Future<void> cancelNotifications(int id) async {
+    await notificationsPlugin.cancel(id);
+  }
 }
