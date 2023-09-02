@@ -152,6 +152,9 @@ class _MyItemState extends State<MyItem> {
     if(datetime.weekday==5){
       tomorrow = datetime.add(Duration(days: 3));
     }
+    if(datetime.weekday==6){
+      tomorrow = datetime.add(Duration(days: 2));
+    }
     String _date = DateFormat('yyyy-MM-dd').format(datetime);
     String _time = DateFormat('kk:mm').format(datetime);
     setState(() {
