@@ -38,52 +38,55 @@ class _OnBoardingState extends State<OnBoarding> {
         child: Container(
           padding: const EdgeInsets.only(top: 20,),
           width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                decoration: BoxDecoration(color: Colors.grey.shade50, borderRadius: BorderRadius.circular(10)),
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 4, bottom: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text("Welcome",  style: TextStyle(fontSize: 34, fontWeight: FontWeight.w400),),
-                    const SizedBox(height: 5,),
-                    Text("Watch This Tutorial Video to use this App",  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey.shade800,), textAlign: TextAlign.center,),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  decoration: BoxDecoration(color: Colors.grey.shade50, borderRadius: BorderRadius.circular(10)),
+                  padding: const EdgeInsets.only(left: 15, right: 15, top: 4, bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text("Welcome",  style: TextStyle(fontSize: 34, fontWeight: FontWeight.w400),),
+                      const SizedBox(height: 5,),
+                      Text("Watch This Tutorial Video to use this App",  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey.shade800,), textAlign: TextAlign.center,),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20,),
+                YoutubePlayer(
+                  progressColors: const ProgressBarColors(backgroundColor: Colors.white, playedColor: Colors.red),
+                  width: MediaQuery.of(context).size.width*0.80,
+                  aspectRatio: 9/16,
+                    controller: _ytcontroller,
+                  showVideoProgressIndicator: true,
+                  bottomActions: [
+                    CurrentPosition(),
+                    ProgressBar(
+                      isExpanded: true,
+                    ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 20,),
-              YoutubePlayer(
-                progressColors: const ProgressBarColors(backgroundColor: Colors.white, playedColor: Colors.red),
-                width: 320,
-                aspectRatio: 9/16,
-                  controller: _ytcontroller,
-                showVideoProgressIndicator: true,
-                bottomActions: [
-                  CurrentPosition(),
-                  ProgressBar(
-                    isExpanded: true,
+                const SizedBox(height: 15,),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(100, 45),
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.grey.shade900,
                   ),
-                ],
-              ),
-              const SizedBox(height: 15,),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(100, 45),
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.grey.shade900,
+                  onPressed: (){
+                    onboard.put("onboardshown", true);
+                    Navigator.push(context,
+                        PageTransition(
+                            child: const HomePage(),
+                            type: PageTransitionType.leftToRightWithFade));
+                  },
+                  child: const Text("I Understand, Continue", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w400),),
                 ),
-                onPressed: (){
-                  onboard.put("onboardshown", true);
-                  Navigator.push(context,
-                      PageTransition(
-                          child: const HomePage(),
-                          type: PageTransitionType.leftToRightWithFade));
-                },
-                child: const Text("I Understand", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w400),),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
