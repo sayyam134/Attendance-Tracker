@@ -40,7 +40,7 @@ class _DetailPageState extends State<DetailPage> {
                   children: [
                     InkWell(
                       onTap: (){
-                        Navigator.pop(context, true);
+                        Navigator.pop(context);
                       },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15.0),

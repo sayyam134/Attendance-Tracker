@@ -101,21 +101,17 @@ class _HomePageState extends State<HomePage> {
                     return InkWell(
                       onLongPress: ()async{
                         _showInterstitialAd();
-                        bool check = await Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
-                        if(check){
-                          setState(() {
-                            populateList();
-                          });
-                        }
+                        await Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
+                        setState(() {
+                          populateList();
+                        });
                       },
                       onTap: ()async{
                         _showInterstitialAd();
-                        bool check = await Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
-                        if(check){
-                          setState(() {
-                            populateList();
-                          });
-                        }
+                        await Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailPage(index: index,)));
+                        setState(() {
+                          populateList();
+                        });
                       },
                       child: Dismissible(
                         background: Padding(
@@ -227,19 +223,6 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: ElevatedButton(
                 onPressed: () async{
-                  var _notificationname = controller1.text;
-                  PermissionStatus notificationStatus = await Permission.notification.request();
-                  if(notificationStatus == PermissionStatus.granted){
-                    NotificationService().showNotification(title: "New Subject: $_notificationname is added.!");
-                    print("working");
-                  }
-                  if(notificationStatus== PermissionStatus.denied){
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ther permission is denied")));
-                    print("Not working");
-                  }
-                  if(notificationStatus== PermissionStatus.permanentlyDenied){
-                    openAppSettings();
-                  }
                   setState(() {
                     item_added();
                   });
@@ -271,6 +254,18 @@ class _HomePageState extends State<HomePage> {
       }
       _subjectbox.add(temp);
       populateList();
+      PermissionStatus notificationStatus = await Permission.notification.request();
+      if(notificationStatus == PermissionStatus.granted){
+        NotificationService().showNotification(title: "New Subject: $name is added.!");
+        print("working");
+      }
+      if(notificationStatus== PermissionStatus.denied){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ther permission is denied")));
+        print("Not working");
+      }
+      if(notificationStatus== PermissionStatus.permanentlyDenied){
+        openAppSettings();
+      }
       Navigator.of(context).pop();
     }
     else {

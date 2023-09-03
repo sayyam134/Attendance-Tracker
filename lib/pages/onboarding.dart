@@ -56,18 +56,20 @@ class _OnBoardingState extends State<OnBoarding> {
                   ),
                 ),
                 const SizedBox(height: 20,),
-                YoutubePlayer(
-                  progressColors: const ProgressBarColors(backgroundColor: Colors.white, playedColor: Colors.red),
-                  width: MediaQuery.of(context).size.width*0.80,
-                  aspectRatio: 9/16,
-                    controller: _ytcontroller,
-                  showVideoProgressIndicator: true,
-                  bottomActions: [
-                    CurrentPosition(),
-                    ProgressBar(
-                      isExpanded: true,
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+                  child: YoutubePlayer(
+                    progressColors: const ProgressBarColors(backgroundColor: Colors.white, playedColor: Colors.red),
+                    aspectRatio: 9/16,
+                      controller: _ytcontroller,
+                    showVideoProgressIndicator: true,
+                    bottomActions: [
+                      CurrentPosition(),
+                      ProgressBar(
+                        isExpanded: true,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 15,),
                 ElevatedButton(
